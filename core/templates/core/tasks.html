@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block sidebar %}
+<div class="col-md-2">
+    <div class="list-group">
+        <a type="button" href="{% url 'tasks' %}" class="list-group-item list-group-item-action active fs-5">Задачи</a>
+        <a type="button" href="{% url 'calendar' %}" class="list-group-item list-group-item-action fs-5">Календарь</a>
+        <a type="button" href="{% url 'pomodoro' %}" class="list-group-item list-group-item-action fs-5">Помодоро</a>
+        <a type="button" href="{% url 'search' %}" class="list-group-item list-group-item-action fs-5">Поиск</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="col-md-10">
+    {% for task in tasks %}
+    <div class="card text-center mt-3 mb-3">
+        <div class="card-header fw-bold">
+            {% if task.priority == 'COMMON' %}
+            Приоритет: <a href="#" class="text-decoration-none text-secondary-emphasis">обычный</a>
+            {% endif %}
+            {% if task.priority == 'LOW' %}
+            Приоритет: <a href="#" class="text-decoration-none text-info">низкий</a>
+            {% endif %}
+            {% if task.priority == 'MEDIUM' %}
+            Приоритет: <a href="#" class="text-decoration-none text-warning">средний</a>
+            {% endif %}
+            {% if task.priority == 'HIGH' %}
+            Приоритет: <a href="#" class="text-decoration-none text-danger">высокий</a>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <a class="card-title fs-3 text-decoration-none">{{ task.title }}</a>
+            <p class="card-text">{{ task.description }}</p>
+            <a href="#" class="btn btn-primary">Выполнено</a>
+        </div>
+        <div class="card-footer text-body-secondary">
+            <div>
+                Создано: {{ task.created_at|date:"d/m/Y H:i" }}
+            </div>
+            <div>
+                Время выполнения: {{ task.duration }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
