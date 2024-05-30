@@ -37,8 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_filters',
-    'django_bootstrap5',
+    'django_filters', # библиотека django_filters
+    'django_bootstrap5', # библиотека django_bootstrap
+    'crispy_forms', # библиотека crispy_forms
+    'crispy_bootstrap5',
     'core.apps.CoreConfig'
 ]
 
@@ -127,3 +129,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = 'media/'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+AUTH_USER_MODEL = 'core.User'
+LOGIN_URL = 'login'

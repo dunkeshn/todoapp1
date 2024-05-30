@@ -14,6 +14,9 @@
 
 {% block content %}
 <div class="col-md-10">
+    <p>
+        <a class="btn btn-primary" href="{%  url 'create-task' %}">Добавить задачу</a>
+    </p>
     {% for task in tasks %}
     <div class="card text-center mt-3 mb-3">
         <div class="card-header fw-bold">
@@ -31,9 +34,16 @@
             {% endif %}
         </div>
         <div class="card-body">
+            <p>
+                {% for owner in task.owners.all %}
+                    <span class="badge text-bg-primary fw-normal">{{ owner.name }} {{ owner.last_name }}</span>
+                {% endfor %}
+            </p>
             <a class="card-title fs-3 text-decoration-none">{{ task.title }}</a>
             <p class="card-text">{{ task.description }}</p>
-            <a href="#" class="btn btn-primary">Выполнено</a>
+            <a href="{% url 'task-completed' task.id %}" class="btn btn-primary">Выполнено</a>
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Добавить пользователя</button>
+
         </div>
         <div class="card-footer text-body-secondary">
             <div>
@@ -44,6 +54,38 @@
             </div>
         </div>
     </div>
+
+                    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Список друзей</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% for user in request.user.friends.all %}
+            <div class="row my-2">
+                <div class="col-auto">
+                    {% if user.picture %}
+                        <img src="{{ user.picture.url }}" width="30" height="30">
+                    {% endif %}
+                </div>
+            <div class="col">
+                {{ user.name }} {{ user.last_name }}
+                <a class="btn btn-sm btn-primary" href="{% url 'add-owner' task.pk user.pk %}">Добавить</a>
+            </div>
+            </div>
+        {% endfor %}
+        {% if not  request.user.friends.all %}
+    У тебя еще нет друзей
+    {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
     {% endfor %}
 </div>
 {% endblock %}
